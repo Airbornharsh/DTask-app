@@ -3,54 +3,52 @@ import 'package:dtask/Provider/Task.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AddTask extends StatefulWidget {
-  const AddTask({super.key});
+class EditTask extends StatefulWidget {
+  TaskModel task;
+  EditTask({super.key, required this.task});
+  bool start = true;
 
   @override
-  State<AddTask> createState() => _AddTaskState();
+  State<EditTask> createState() => _EditTaskState();
 }
 
-class _AddTaskState extends State<AddTask> {
+class _EditTaskState extends State<EditTask> {
   final _taskController = TextEditingController();
 
   @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-
-    _taskController.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    if (widget.start) {
+      setState(() {
+        // _taskController.text = widget.task.taskName;
+        widget.start = false;
+      });
+    }
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(children: [
         TextField(
           controller: _taskController,
-          keyboardType: TextInputType.multiline,
           textInputAction: TextInputAction.done,
           // expands: true,
           maxLines: null,
           autofocus: true,
-          onSubmitted: (value) {
-            FocusScope.of(context).requestFocus(FocusNode());
-          },
           decoration: const InputDecoration(
             label: Text("Note"),
-            hintText: "Enter Your Task Here",
+            hintText: "Edit Task Here",
           ),
         ),
         TextButton(
             onPressed: () {
-              Provider.of<Task>(context,listen: false).addTask(_taskController.text);
+              Provider.of<Task>(context, listen: false)
+                  .editTask(widget.task, _taskController.text);
               Navigator.of(context).pop();
             },
             style: ButtonStyle(
                 backgroundColor: MaterialStatePropertyAll<Color>(
                     Provider.of<Settings>(context).getPrimary)),
             child: const Text(
-              "ADD",
+              "Edit",
               style: TextStyle(color: Colors.white),
             ))
       ]),

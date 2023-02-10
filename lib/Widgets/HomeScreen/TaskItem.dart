@@ -1,5 +1,8 @@
 import 'package:dtask/Provider/Task.dart';
+import 'package:dtask/Widgets/HomeScreen/AddTask.dart';
+import 'package:dtask/Widgets/HomeScreen/EditTask.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class TaskItem extends StatelessWidget {
@@ -15,7 +18,13 @@ class TaskItem extends StatelessWidget {
     return GestureDetector(
       onTap: () {},
       onDoubleTap: () {
-        Provider.of<Task>(context, listen: false).editTask(task, "Hesdcs");
+        // Provider.of<Task>(context, listen: false).editTask(task, "Hesdcs");
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return EditTask(task: task);
+          },
+        );
       },
       child: Container(
         decoration: BoxDecoration(
