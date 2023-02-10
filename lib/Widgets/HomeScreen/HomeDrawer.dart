@@ -54,6 +54,17 @@ class HomeDrawer extends StatelessWidget {
               leading: const Icon(Icons.calendar_view_day),
               title: const Text("Days"),
             ),
+            ListTile(
+              onTap: () {
+                Provider.of<Settings>(context, listen: false)
+                    .setSelectedDrawerIndex(2);
+              },
+              selected:
+                  Provider.of<Settings>(context).getSelectedDrawerIndex == 2,
+              selectedTileColor: Colors.grey.shade200,
+              leading: const Icon(Icons.calendar_view_month),
+              title: const Text("Months"),
+            ),
           ],
         ));
   }

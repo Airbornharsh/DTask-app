@@ -3,12 +3,12 @@ import 'package:dtask/Widgets/HomeScreen/TaskItem.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Days extends StatelessWidget {
-  const Days({super.key});
+class Months extends StatelessWidget {
+  const Months({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final taskDayList = Provider.of<Task>(context).getTaskDayList;
+    final taskMonthList = Provider.of<Task>(context).getTaskMonthList;
     final date = DateTime.now();
 
     List months = [
@@ -27,12 +27,11 @@ class Days extends StatelessWidget {
     ];
 
     return ListView.builder(
-      itemCount: Provider.of<Task>(context).getTaskDayListLength,
+      itemCount: Provider.of<Task>(context).getTaskMonthListLength,
       itemBuilder: (context, index) {
         return ExpansionTile(
-          title: Text(
-              "${Provider.of<Task>(context).getDays(date.day - index)} ${months[date.month - 1]}"),
-          trailing: Text("${taskDayList[index].length} Items"),
+          title: Text(months[date.month - index - 1]),
+          trailing: Text("${taskMonthList[index].length} Items"),
           children: [
             SizedBox(
               height: 300,
@@ -42,10 +41,10 @@ class Days extends StatelessWidget {
                     mainAxisSpacing: 3,
                     crossAxisSpacing: 3,
                     childAspectRatio: 4 / 3),
-                itemCount: taskDayList[index].length,
+                itemCount: taskMonthList[index].length,
                 itemBuilder: (context, i) {
                   return TaskItem(
-                    task: taskDayList[index][i],
+                    task: taskMonthList[index][i],
                     isDrag: false,
                   );
                 },

@@ -1,7 +1,9 @@
 import 'package:dtask/Provider/Settings.dart';
 import 'package:dtask/Provider/Task.dart';
 import 'package:dtask/Widgets/HomeScreen/AddTask.dart';
+import 'package:dtask/Widgets/HomeScreen/Drawer/Days.dart';
 import 'package:dtask/Widgets/HomeScreen/Drawer/Home.dart';
+import 'package:dtask/Widgets/HomeScreen/Drawer/Months.dart';
 import 'package:dtask/Widgets/HomeScreen/HomeDrawer.dart';
 import 'package:dtask/Widgets/HomeScreen/TaskItem.dart';
 import 'package:flutter/material.dart';
@@ -20,11 +22,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     if (widget.start) {
       Provider.of<Task>(context, listen: false).onLoad();
+
+      Provider.of<Settings>(context, listen: false).onLoad();
+
       setState(() {
         widget.start = false;
       });
-
-      Provider.of<Settings>(context, listen: false).onLoad();
     }
 
     Widget getWidgetAccordingDrawer() {
@@ -33,15 +36,22 @@ class _HomeScreenState extends State<HomeScreen> {
           return const Home();
 
         case 1:
-          return Container();
-          
+          return const Days();
+
+        case 2:
+          return const Months();
+
         default:
           return Container();
       }
     }
 
+    var appBarTitle = ["DTask", "Sorted By Days", "Sorted By Months"];
+
     return Scaffold(
-      appBar: AppBar(title: const Text("DTask")),
+      appBar: AppBar(
+          title: Text(appBarTitle[
+              Provider.of<Settings>(context).getSelectedDrawerIndex])),
       floatingActionButton: ClipRRect(
         borderRadius: BorderRadius.circular(200),
         child: Container(
@@ -70,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             const SizedBox(
-              height: 80,
+              height: 10,
             ),
             // DragTarget(
             //   onAccept: (data) {

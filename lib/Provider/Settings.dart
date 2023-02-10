@@ -40,4 +40,5 @@ class Settings with ChangeNotifier {
       notifyListeners();
     }
   }
+
 }

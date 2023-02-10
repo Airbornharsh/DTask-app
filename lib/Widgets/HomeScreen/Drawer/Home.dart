@@ -20,6 +20,7 @@ class Home extends StatelessWidget {
 
         return TaskItem(
           task: task,
+          isDrag: true,
         );
       },
     );
