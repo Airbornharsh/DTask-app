@@ -1,8 +1,7 @@
+import 'package:dtask/Provider/Settings.dart';
 import 'package:dtask/Provider/Task.dart';
-import 'package:dtask/Widgets/HomeScreen/AddTask.dart';
 import 'package:dtask/Widgets/HomeScreen/EditTask.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class TaskItem extends StatelessWidget {
@@ -16,14 +15,59 @@ class TaskItem extends StatelessWidget {
         DateTime.fromMillisecondsSinceEpoch(task.createdOn, isUtc: false);
 
     return GestureDetector(
-      onTap: () {},
-      onDoubleTap: () {
-        // Provider.of<Task>(context, listen: false).editTask(task, "Hesdcs");
-        showModalBottomSheet(
+      onLongPress: () {
+        final alert = AlertDialog(
+          title: const Text("Alert"),
+          content: const Text("Want to Delete"),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(
+                  Icons.close,
+                )),
+            IconButton(
+                onPressed: () {
+                  Provider.of<Task>(context, listen: false).deleteTask(task);
+                },
+                icon: const Icon(Icons.delete))
+          ],
+        );
+
+        showDialog(
           context: context,
-          builder: (context) {
-            return EditTask(task: task);
-          },
+          builder: (context) => alert,
+        );
+      },
+      onDoubleTap: () {
+        final alert = AlertDialog(
+          title: const Text("Alert"),
+          content: const Text("Want to Edit"),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                icon: const Icon(Icons.close)),
+            IconButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return EditTask(task: task);
+                    },
+                  );
+                },
+                icon: const Icon(Icons.edit))
+          ],
+        );
+
+        showDialog(
+          context: context,
+          builder: (context) => alert,
         );
       },
       child: Container(
