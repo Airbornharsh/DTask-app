@@ -1,5 +1,6 @@
 import 'package:dtask/Provider/Settings.dart';
 import 'package:dtask/Provider/Task.dart';
+import 'package:dtask/Widgets/HomeScreen/TaskItem.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -67,43 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemCount: Provider.of<Task>(context).getTaskListLength,
                 itemBuilder: (context, index) {
                   final task = Provider.of<Task>(context).getTaskList[index];
-                  final dateTime = DateTime.fromMillisecondsSinceEpoch(
-                      task.createdOn,
-                      isUtc: false);
 
-                  return GestureDetector(
-                    onTap: () {},
-                    child: Draggable(
-                      data: task.id,
-                      feedback: const Icon(
-                        Icons.file_copy,
-                        size: 60,
-                      ),
-                      childWhenDragging: Container(),
-                      child: Container(
-                        decoration: BoxDecoration(color: Colors.grey.shade300),
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: GridTile(
-                                  child: Hero(
-                                tag: task.id,
-                                child: Text(task.taskName),
-                              )),
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "${dateTime.hour}:${dateTime.minute} ${dateTime.day}/${dateTime.month}/${dateTime.year}",
-                              style: const TextStyle(fontSize: 11),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
+                  return TaskItem(
+                    task: task,
                   );
                 },
               ),
