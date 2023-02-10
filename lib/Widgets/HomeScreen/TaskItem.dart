@@ -44,8 +44,9 @@ class _TaskItemState extends State<TaskItem> {
           ),
           // childWhenDragging: Container(),
           child: Container(
-            decoration: BoxDecoration(color: Colors.grey.shade300),
-            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(7)),
+            padding: const EdgeInsets.all(7),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

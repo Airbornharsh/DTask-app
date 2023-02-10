@@ -1,6 +1,8 @@
 import 'package:dtask/Provider/Settings.dart';
 import 'package:dtask/Provider/Task.dart';
 import 'package:dtask/Widgets/HomeScreen/AddTask.dart';
+import 'package:dtask/Widgets/HomeScreen/Drawer/Home.dart';
+import 'package:dtask/Widgets/HomeScreen/HomeDrawer.dart';
 import 'package:dtask/Widgets/HomeScreen/TaskItem.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -17,10 +19,25 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     if (widget.start) {
-      Provider.of<Task>(context).onLoad();
+      Provider.of<Task>(context, listen: false).onLoad();
       setState(() {
         widget.start = false;
       });
+
+      Provider.of<Settings>(context, listen: false).onLoad();
+    }
+
+    Widget getWidgetAccordingDrawer() {
+      switch (Provider.of<Settings>(context).getSelectedDrawerIndex) {
+        case 0:
+          return const Home();
+
+        case 1:
+          return Container();
+          
+        default:
+          return Container();
+      }
     }
 
     return Scaffold(
@@ -47,40 +64,30 @@ class _HomeScreenState extends State<HomeScreen> {
               tooltip: "Add",
             )),
       ),
-      body: Column(
-        children: [
-          const SizedBox(
-            height: 80,
-          ),
-          // DragTarget(
-          //   onAccept: (data) {
-          //     print(data);
-          //   },
-          //   builder: (context, candidateData, rejectedData) {
-          //     return const Icon(Icons.delete);
-          //   },
-          // ),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 3,
-                    crossAxisSpacing: 3,
-                    childAspectRatio: 4 / 3),
-                itemCount: Provider.of<Task>(context).getTaskListLength,
-                itemBuilder: (context, index) {
-                  final task = Provider.of<Task>(context).getTaskList[index];
-
-                  return TaskItem(
-                    task: task,
-                  );
-                },
-              ),
+      drawer: const HomeDrawer(),
+      body: Container(
+        decoration: BoxDecoration(color: Colors.grey.shade200),
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 80,
             ),
-          )
-        ],
+            // DragTarget(
+            //   onAccept: (data) {
+            //     print(data);
+            //   },
+            //   builder: (context, candidateData, rejectedData) {
+            //     return const Icon(Icons.delete);
+            //   },
+            // ),
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: getWidgetAccordingDrawer(),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

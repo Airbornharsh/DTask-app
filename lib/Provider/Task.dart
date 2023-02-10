@@ -11,9 +11,17 @@ class TaskModel {
       {required this.taskName, required this.createdOn, required this.id});
 }
 
+class TaskModelTime {
+  // String taskName;
+  // String id;
+  // int seconds;
+  // int minute;
+  // int
+}
+
 class Task with ChangeNotifier {
-  List<String> _taskString = [];
-  List<TaskModel> _task = [];
+  final List<String> _taskString = [];
+  final List<TaskModel> _task = [];
 
   List<TaskModel> get getTaskList {
     return _task;
@@ -30,12 +38,16 @@ class Task with ChangeNotifier {
       if (prefs.containsKey("dtask_collection")) {
         final list = prefs.getStringList("dtask_collection") as List<String>;
 
-        _taskString = list;
+        _taskString.addAll(list);
 
-        final taskList = list.map((e) => TaskModel(
-            taskName: e.split("@#_dtask_task_detail_#@")[0],
-            createdOn: int.parse(e.split("@#_dtask_task_detail_#@")[1]),
-            id: e.split("@#_dtask_task_detail_#@")[2]));
+        final taskList = _taskString.map((e) {
+          final task = TaskModel(
+              taskName: e.split("@#_dtask_task_detail_#@")[0],
+              createdOn: int.parse(e.split("@#_dtask_task_detail_#@")[1]),
+              id: e.split("@#_dtask_task_detail_#@")[2]);
+
+          return task;
+        });
 
         _task.addAll(taskList);
 
@@ -62,9 +74,9 @@ class Task with ChangeNotifier {
         await prefs.setStringList("dtask_collection", []);
       }
 
-      _taskString.add(
+      _taskString.insert(0,
           "$taskName@#_dtask_task_detail_#@$taskCreatedOn@#_dtask_task_detail_#@$taskId");
-      _task.add(
+      _task.insert(0,
           TaskModel(taskName: taskName, createdOn: taskCreatedOn, id: taskId));
 
       await prefs.setStringList("dtask_collection", _taskString);
