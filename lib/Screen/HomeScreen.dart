@@ -1,5 +1,6 @@
 import 'package:dtask/Provider/Settings.dart';
 import 'package:dtask/Provider/Task.dart';
+import 'package:dtask/Widgets/HomeScreen/AddTask.dart';
 import 'package:dtask/Widgets/HomeScreen/TaskItem.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -31,14 +32,17 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration:
                 BoxDecoration(color: Provider.of<Settings>(context).getPrimary),
             child: IconButton(
-              onPressed: () {
-                Provider.of<Task>(context, listen: false).addTask(
-                    "Hii There nfvn k sjidjcis cs ci jsij isc siojc isjic sc sijci sicjs iiscjisjci ciosjisjijiohdios huHu hsdH iauih fsiuiv isuiR SFjljxiokxvnjkagUI jdi dgfid udx gd dzj srf i jshdc isj i cdsiosdcv usdfd vjc s sioscd  dcuxh iosd ssb  hsdc sh sh avxj df sfv ufv sdhcs cs icdjsij icssc sdic sijcisk c j cs dcsifsvbhgahv uoh asa uiui uibfsduivuv sdui");
+              onPressed: () async {
+                await showModalBottomSheet(
+                    context: context,
+                    builder: (context) {
+                      return const AddTask();
+                    });
               },
               icon: Icon(
                 Icons.add,
                 size: 30,
-                color: Colors.grey.shade400,
+                color: Colors.grey.shade200,
               ),
               tooltip: "Add",
             )),
