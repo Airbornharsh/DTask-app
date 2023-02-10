@@ -50,8 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return Scaffold(
       appBar: AppBar(
-          title: Text(appBarTitle[
-              Provider.of<Settings>(context).getSelectedDrawerIndex])),
+          title: Text(
+        appBarTitle[Provider.of<Settings>(context).getSelectedDrawerIndex],
+      )),
       floatingActionButton: ClipRRect(
         borderRadius: BorderRadius.circular(200),
         child: Container(

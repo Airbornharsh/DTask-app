@@ -160,4 +160,58 @@ class Task with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  Future editTask(TaskModel task, String name) async {
+    final prefs = await SharedPreferences.getInstance();
+    final date = DateTime.now();
+    final tempDate = DateTime.fromMillisecondsSinceEpoch(task.createdOn);
+
+    final index = _taskString.indexOf(
+        "${task.taskName}@#_dtask_task_detail_#@${task.createdOn}@#_dtask_task_detail_#@${task.id}");
+
+    _taskString[index] =
+        "$name@#_dtask_task_detail_#@${task.createdOn}@#_dtask_task_detail_#@${task.id}";
+    final tempTask =
+        TaskModel(taskName: name, createdOn: task.createdOn, id: task.id);
+    _task[index] = tempTask;
+
+    if (date.month == tempDate.month && date.year == tempDate.year) {
+      final tempList = _taskDay[date.day - tempDate.day];
+      final tempIndex = tempList.indexWhere((e) => e.id == task.id);
+      _taskDay[date.day - tempDate.day][tempIndex] = tempTask;
+    }
+
+    if (date.year == tempDate.year) {
+      final tempList = _taskMonth[date.month - tempDate.month];
+      final tempIndex = tempList.indexWhere((e) => e.id == task.id);
+      _taskMonth[date.month - tempDate.month][tempIndex] = tempTask;
+    }
+
+    await prefs.setStringList("dtask_collection", _taskString);
+
+    notifyListeners();
+  }
+
+  Future deleteTask(TaskModel task) async {
+    final prefs = await SharedPreferences.getInstance();
+    final date = DateTime.now();
+    final tempDate = DateTime.fromMillisecondsSinceEpoch(task.createdOn);
+
+    _taskString.remove(
+        "${task.taskName}@#_dtask_task_detail_#@${task.createdOn}@#_dtask_task_detail_#@${task.id}");
+    _task.removeWhere((e) => e.id == task.id);
+
+    if (date.month == tempDate.month && date.year == tempDate.year) {
+      _taskDay[date.day - tempDate.day].removeWhere((e) => e.id == task.id);
+    }
+
+    if (date.year == tempDate.year) {
+      _taskMonth[date.month - tempDate.month]
+          .removeWhere((e) => e.id == task.id);
+    }
+
+    await prefs.setStringList("dtask_collection", _taskString);
+
+    notifyListeners();
+  }
 }

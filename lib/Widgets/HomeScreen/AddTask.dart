@@ -24,6 +24,7 @@ class _AddTaskState extends State<AddTask> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(children: [
         TextField(
           controller: _taskController,

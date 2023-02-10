@@ -1,50 +1,44 @@
 import 'package:dtask/Provider/Task.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class TaskItem extends StatefulWidget {
+class TaskItem extends StatelessWidget {
   TaskModel task;
   bool isDrag;
   TaskItem({super.key, required this.task, required this.isDrag});
 
   @override
-  State<TaskItem> createState() => _TaskItemState();
-}
-
-class _TaskItemState extends State<TaskItem> {
-  bool isVisible = true;
-
-  @override
   Widget build(BuildContext context) {
-    final dateTime = DateTime.fromMillisecondsSinceEpoch(widget.task.createdOn,
-        isUtc: false);
+    final dateTime =
+        DateTime.fromMillisecondsSinceEpoch(task.createdOn, isUtc: false);
 
-    return Visibility(
-      visible: isVisible,
-      child: GestureDetector(
-        onTap: () {},
-        child: Container(
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(7)),
-          padding: const EdgeInsets.all(7),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: GridTile(
-                    child: Hero(
-                  tag: widget.task.id,
-                  child: Text(widget.task.taskName),
-                )),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                "${dateTime.hour}:${dateTime.minute} ${dateTime.day}/${dateTime.month}/${dateTime.year}",
-                style: const TextStyle(fontSize: 11),
-              )
-            ],
-          ),
+    return GestureDetector(
+      onTap: () {},
+      onDoubleTap: () {
+        Provider.of<Task>(context, listen: false).editTask(task, "Hesdcs");
+      },
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.white, borderRadius: BorderRadius.circular(7)),
+        padding: const EdgeInsets.all(7),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: GridTile(
+                  child: Hero(
+                tag: task.id,
+                child: Text(task.taskName),
+              )),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Text(
+              "${dateTime.hour}:${dateTime.minute} ${dateTime.day}/${dateTime.month}/${dateTime.year}",
+              style: const TextStyle(fontSize: 11),
+            )
+          ],
         ),
       ),
     );
