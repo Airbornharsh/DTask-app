@@ -1,12 +1,13 @@
 import 'package:dtask/Provider/Settings.dart';
 import 'package:dtask/Provider/Task.dart';
-import 'package:dtask/Widgets/HomeScreen/EditTask.dart';
+import 'package:dtask/Widgets/HomeScreen/TaskView.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class TaskItem extends StatelessWidget {
   TaskModel task;
   bool isDrag;
+  bool isDeleted = false;
   TaskItem({super.key, required this.task, required this.isDrag});
 
   @override
@@ -15,59 +16,26 @@ class TaskItem extends StatelessWidget {
         DateTime.fromMillisecondsSinceEpoch(task.createdOn, isUtc: false);
 
     return GestureDetector(
-      onLongPress: () {
-        final alert = AlertDialog(
-          title: const Text("Alert"),
-          content: const Text("Want to Delete"),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: const Icon(
-                  Icons.close,
-                )),
-            IconButton(
-                onPressed: () {
-                  Provider.of<Task>(context, listen: false).deleteTask(task);
-                },
-                icon: const Icon(Icons.delete))
-          ],
-        );
-
-        showDialog(
+      onTap: () {
+        showGeneralDialog(
           context: context,
-          builder: (context) => alert,
-        );
-      },
-      onDoubleTap: () {
-        final alert = AlertDialog(
-          title: const Text("Alert"),
-          content: const Text("Want to Edit"),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                icon: const Icon(Icons.close)),
-            IconButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (context) {
-                      return EditTask(task: task);
-                    },
-                  );
-                },
-                icon: const Icon(Icons.edit))
-          ],
-        );
-
-        showDialog(
-          context: context,
-          builder: (context) => alert,
+          barrierDismissible: true,
+          barrierLabel:
+              MaterialLocalizations.of(context).modalBarrierDismissLabel,
+          barrierColor: Colors.black45,
+          transitionDuration: const Duration(milliseconds: 200),
+          pageBuilder: (context, animation, secondaryAnimation) {
+            return Center(
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width - 20,
+                height: MediaQuery.of(context).size.height - 100,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(7),
+                  child: TaskView(task: task),
+                ),
+              ),
+            );
+          },
         );
       },
       child: Container(

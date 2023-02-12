@@ -4,8 +4,6 @@ import 'package:dtask/Widgets/HomeScreen/AddTask.dart';
 import 'package:dtask/Widgets/HomeScreen/Drawer/Days.dart';
 import 'package:dtask/Widgets/HomeScreen/Drawer/Home.dart';
 import 'package:dtask/Widgets/HomeScreen/Drawer/Months.dart';
-import 'package:dtask/Widgets/HomeScreen/HomeDrawer.dart';
-import 'package:dtask/Widgets/HomeScreen/TaskItem.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
