@@ -21,7 +21,6 @@ class _TaskViewState extends State<TaskView> {
   Widget build(BuildContext context) {
     if (widget.start) {
       setState(() {
-        print("Hii");
         taskName = widget.task.taskName;
         widget.start = false;
       });

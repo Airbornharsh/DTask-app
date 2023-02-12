@@ -14,8 +14,9 @@ class TaskModel {
 class Task with ChangeNotifier {
   final List<String> _taskString = [];
   List<TaskModel> _task = [];
-  List<List<TaskModel>> _taskDay = [];
-  List<List<TaskModel>> _taskMonth = [];
+  final List<List<TaskModel>> _taskDay = [];
+  final List<List<TaskModel>> _taskMonth = [];
+  final List<String> _selectedTask = [];
 
   List<TaskModel> get getTaskList {
     return _task;
@@ -64,7 +65,6 @@ class Task with ChangeNotifier {
       final date = DateTime.now();
       final day = date.day;
       final month = date.month;
-      final year = date.year;
 
       if (prefs.containsKey("dtask_collection")) {
         final list = prefs.getStringList("dtask_collection") as List<String>;
@@ -92,8 +92,6 @@ class Task with ChangeNotifier {
         }
 
         _task.addAll(taskList);
-        // _taskDay = _taskDay.reversed.toList();
-        // _taskMonth = _taskMonth.reversed.toList();
 
         return;
       } else {
@@ -275,5 +273,21 @@ class Task with ChangeNotifier {
 
       return task;
     }).toList();
+  }
+
+  bool isSelected(String taskId) {
+    return _selectedTask.contains(taskId);
+  }
+
+  void addSelectedTask(String taskId) {
+    if (!_selectedTask.contains(taskId)) {
+      _selectedTask.add(taskId);
+    }
+  }
+
+  void removeSelectedTsak(String taskId) {
+    if (_selectedTask.contains(taskId)) {
+      _selectedTask.remove(taskId);
+    }
   }
 }
