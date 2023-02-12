@@ -91,6 +91,7 @@ class _TaskItemState extends State<TaskItem> {
               right: -7,
               bottom: -7,
               child: Checkbox(
+                activeColor: Provider.of<Settings>(context).getPrimary,
                 value: isSelected,
                 onChanged: (value) {
                   setState(() {

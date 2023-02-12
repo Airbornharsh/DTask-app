@@ -105,55 +105,67 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             Row(
               children: [
-                Container(
-                  height: 40,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-                  margin: const EdgeInsets.only(left: 10),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 252, 252, 252),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: DropdownButton(
-                    icon: const Icon(Icons.filter_alt_rounded),
-                    value:
-                        Provider.of<Settings>(context).getSelectedFilterIndex,
-                    items: [
-                      DropdownMenuItem(value: 0, child: Text(filter[0])),
-                      DropdownMenuItem(value: 1, child: Text(filter[1])),
-                      DropdownMenuItem(value: 2, child: Text(filter[2]))
-                    ],
-                    onChanged: (value) {
-                      Provider.of<Settings>(context, listen: false)
-                          .setSelectedFilterIndex(value as int);
-                    },
-                  ),
-                ),
-                Container(
-                  height: 40,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-                  margin: const EdgeInsets.only(left: 10),
-                  decoration: BoxDecoration(
-                    color: const Color.fromARGB(255, 252, 252, 252),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  child: DropdownButton(
-                    icon: const Icon(Icons.sort),
-                    value: Provider.of<Settings>(context).getSelectedSortIndex,
-                    items: [
-                      DropdownMenuItem(value: 0, child: Text(sort[0])),
-                      DropdownMenuItem(value: 1, child: Text(sort[1])),
-                    ],
-                    onChanged: (value) {
-                      Provider.of<Settings>(context, listen: false)
-                          .setSelectedSortIndex(value as int);
+                Row(
+                  children: [
+                    Container(
+                      height: 40,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 0),
+                      margin: const EdgeInsets.only(left: 10),
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 252, 252, 252),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: DropdownButton(
+                        icon: const Icon(Icons.filter_alt_rounded),
+                        value: Provider.of<Settings>(context)
+                            .getSelectedFilterIndex,
+                        items: [
+                          DropdownMenuItem(value: 0, child: Text(filter[0])),
+                          DropdownMenuItem(value: 1, child: Text(filter[1])),
+                          DropdownMenuItem(value: 2, child: Text(filter[2]))
+                        ],
+                        onChanged: (value) {
+                          Provider.of<Settings>(context, listen: false)
+                              .setSelectedFilterIndex(value as int);
+                        },
+                      ),
+                    ),
+                    Container(
+                      height: 40,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 0),
+                      margin: const EdgeInsets.only(left: 10),
+                      decoration: BoxDecoration(
+                        color: const Color.fromARGB(255, 252, 252, 252),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: DropdownButton(
+                        icon: const Icon(Icons.sort),
+                        value:
+                            Provider.of<Settings>(context).getSelectedSortIndex,
+                        items: [
+                          DropdownMenuItem(value: 0, child: Text(sort[0])),
+                          DropdownMenuItem(value: 1, child: Text(sort[1])),
+                        ],
+                        onChanged: (value) {
+                          Provider.of<Settings>(context, listen: false)
+                              .setSelectedSortIndex(value as int);
 
-                      Provider.of<Task>(context, listen: false)
-                          .sorting(sort[value]);
-                    },
-                  ),
+                          Provider.of<Task>(context, listen: false)
+                              .sorting(sort[value]);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
+                Checkbox(
+                  activeColor: Provider.of<Settings>(context).getPrimary,
+                  value: false,
+                  onChanged: (value) {
+                    
+                  },
+                )
               ],
             ),
             const SizedBox(

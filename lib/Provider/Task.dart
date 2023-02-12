@@ -279,15 +279,40 @@ class Task with ChangeNotifier {
     return _selectedTask.contains(taskId);
   }
 
+  bool isListSelected(List<TaskModel> tasks) {
+    for (var task in tasks) {
+      if (!_selectedTask.contains(task.id)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   void addSelectedTask(String taskId) {
     if (!_selectedTask.contains(taskId)) {
       _selectedTask.add(taskId);
     }
   }
 
+  void addSelectedListTask(List<TaskModel> tasks) {
+    for (var task in tasks) {
+      if (!_selectedTask.contains(task.id)) {
+        _selectedTask.add(task.id);
+      }
+    }
+  }
+
   void removeSelectedTsak(String taskId) {
     if (_selectedTask.contains(taskId)) {
       _selectedTask.remove(taskId);
+    }
+  }
+
+  void removeSelectedListTask(List<TaskModel> tasks) {
+    for (var task in tasks) {
+      if (_selectedTask.contains(task.id)) {
+        _selectedTask.remove(task.id);
+      }
     }
   }
 }
