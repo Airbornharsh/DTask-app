@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
@@ -11,14 +9,6 @@ class TaskModel {
 
   TaskModel(
       {required this.taskName, required this.createdOn, required this.id});
-}
-
-class TaskModelTime {
-  // String taskName;
-  // String id;
-  // int seconds;
-  // int minute;
-  // int
 }
 
 class Task with ChangeNotifier {
@@ -65,6 +55,11 @@ class Task with ChangeNotifier {
 
   Future onLoad() async {
     try {
+      _taskString.clear();
+      _task.clear();
+      _taskDay.clear();
+      _taskMonth.clear();
+
       final prefs = await SharedPreferences.getInstance();
       final date = DateTime.now();
       final day = date.day;

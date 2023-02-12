@@ -43,7 +43,8 @@ class _AddTaskState extends State<AddTask> {
         ),
         TextButton(
             onPressed: () {
-              Provider.of<Task>(context,listen: false).addTask(_taskController.text);
+              Provider.of<Task>(context, listen: false)
+                  .addTask(_taskController.text);
               Navigator.of(context).pop();
             },
             style: ButtonStyle(

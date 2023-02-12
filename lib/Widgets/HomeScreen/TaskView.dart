@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 class TaskView extends StatefulWidget {
   TaskModel task;
   TaskView({super.key, required this.task});
+  bool start = true;
 
   @override
   State<TaskView> createState() => _TaskViewState();
@@ -14,9 +15,18 @@ class TaskView extends StatefulWidget {
 class _TaskViewState extends State<TaskView> {
   bool isEditing = false;
   final _taskController = TextEditingController();
+  late String taskName;
 
   @override
   Widget build(BuildContext context) {
+    if (widget.start) {
+      setState(() {
+        print("Hii");
+        taskName = widget.task.taskName;
+        widget.start = false;
+      });
+    }
+
     return Scaffold(
       body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
@@ -41,62 +51,11 @@ class _TaskViewState extends State<TaskView> {
                     children: [
                       IconButton(
                           onPressed: () {
-                            // final alert = AlertDialog(
-                            //   title: const Text("Alert"),
-                            //   content: const Text("Want to Edit"),
-                            //   actions: [
-                            //     IconButton(
-                            //         onPressed: () {
-                            //           Navigator.of(context).pop();
-                            //         },
-                            //         icon: Icon(
-                            //           Icons.close,
-                            //           color: Provider.of<Settings>(context,
-                            //                   listen: false)
-                            //               .getPrimary,
-                            //         )),
-                            //     IconButton(
-                            //         onPressed: () {
-                            //           Navigator.of(context).pop();
-
-                            //           setState(() {
-                            //             _taskController.text =
-                            //                 widget.task.taskName;
-                            //             isEditing = true;
-                            //           });
-
-                            //           // showModalBottomSheet(
-                            //           //   context: context,
-                            //           //   builder: (context) {
-                            //           //     return EditTask(task: widget.task);
-                            //           //   },
-                            //           // );
-                            //         },
-                            //         icon: Icon(Icons.edit,
-                            //             color: Provider.of<Settings>(context,
-                            //                     listen: false)
-                            //                 .getPrimary))
-                            //   ],
-                            // );
-
-                            // showDialog(
-                            //   context: context,
-                            //   builder: (context) => alert,
-                            // );
-
-                            // Navigator.of(context).pop();
-
                             setState(() {
                               _taskController.text = widget.task.taskName;
                               isEditing = true;
+                              widget.start = false;
                             });
-
-                            // showModalBottomSheet(
-                            //   context: context,
-                            //   builder: (context) {
-                            //     return EditTask(task: widget.task);
-                            //   },
-                            // );
                           },
                           icon: Icon(
                             Icons.edit,
@@ -191,7 +150,7 @@ class _TaskViewState extends State<TaskView> {
                                           widget.task, _taskController.text);
                                   // Navigator.of(context).pop();
                                   setState(() {
-                                    widget.task.taskName = _taskController.text;
+                                    taskName = _taskController.text;
                                     isEditing = false;
                                   });
                                 },
@@ -201,7 +160,7 @@ class _TaskViewState extends State<TaskView> {
                                             Provider.of<Settings>(context)
                                                 .getPrimary)),
                                 child: const Text(
-                                  "Edit",
+                                  "Update",
                                   style: TextStyle(color: Colors.white),
                                 ))
                           ],
@@ -211,7 +170,7 @@ class _TaskViewState extends State<TaskView> {
                   if (!isEditing)
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(widget.task.taskName),
+                      child: Text(taskName),
                     ),
                 ],
               )

@@ -85,7 +85,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       // drawer: const HomeDrawer(),
       body: Container(
-        decoration: BoxDecoration(color: Provider.of<Settings>(context).getColor2),
+        decoration:
+            BoxDecoration(color: Provider.of<Settings>(context).getColor2),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -159,9 +160,14 @@ class _HomeScreenState extends State<HomeScreen> {
               height: 10,
             ),
             Expanded(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: getWidgetAccordingDrawer(),
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  Provider.of<Task>(context, listen: false).onLoad();
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 5),
+                  child: getWidgetAccordingDrawer(),
+                ),
               ),
             )
           ],
