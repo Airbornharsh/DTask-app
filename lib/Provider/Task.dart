@@ -42,6 +42,10 @@ class Task with ChangeNotifier {
     return _taskMonth.length;
   }
 
+  int get getSelectedTaskLength {
+    return _selectedTask.length;
+  }
+
   String getDays(int val) {
     if (val == 1 || val == 21 || val == 31) {
       return "${val}st";
@@ -108,8 +112,6 @@ class Task with ChangeNotifier {
   void addTask(String taskName) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-
-      final date = DateTime.now();
 
       final taskId = const Uuid().v1();
       final taskCreatedOn = DateTime.now().millisecondsSinceEpoch;
@@ -186,6 +188,40 @@ class Task with ChangeNotifier {
           .removeWhere((e) => e.id == task.id);
     }
 
+    await prefs.setStringList("dtask_collection", _taskString);
+
+    notifyListeners();
+  }
+
+  Future deleteSelectedTask() async {
+    final prefs = await SharedPreferences.getInstance();
+    final date = DateTime.now();
+
+    List<TaskModel> tasks = [];
+
+    for (var taskId in _selectedTask) {
+      final tempTask = _task.firstWhere((task) => task.id == taskId);
+      tasks.add(tempTask);
+    }
+
+    _selectedTask.clear();
+
+    for (var task in tasks) {
+      final tempDate = DateTime.fromMillisecondsSinceEpoch(task.createdOn);
+
+      _taskString.remove(
+          "${task.taskName}@#_dtask_task_detail_#@${task.createdOn}@#_dtask_task_detail_#@${task.id}");
+      _task.removeWhere((e) => e.id == task.id);
+
+      if (date.month == tempDate.month && date.year == tempDate.year) {
+        _taskDay[date.day - tempDate.day].removeWhere((e) => e.id == task.id);
+      }
+
+      if (date.year == tempDate.year) {
+        _taskMonth[date.month - tempDate.month]
+            .removeWhere((e) => e.id == task.id);
+      }
+    }
     await prefs.setStringList("dtask_collection", _taskString);
 
     notifyListeners();
@@ -292,6 +328,7 @@ class Task with ChangeNotifier {
     if (!_selectedTask.contains(taskId)) {
       _selectedTask.add(taskId);
     }
+    notifyListeners();
   }
 
   void addSelectedListTask(List<TaskModel> tasks) {
@@ -300,12 +337,14 @@ class Task with ChangeNotifier {
         _selectedTask.add(task.id);
       }
     }
+    notifyListeners();
   }
 
   void removeSelectedTsak(String taskId) {
     if (_selectedTask.contains(taskId)) {
       _selectedTask.remove(taskId);
     }
+    notifyListeners();
   }
 
   void removeSelectedListTask(List<TaskModel> tasks) {
@@ -314,5 +353,6 @@ class Task with ChangeNotifier {
         _selectedTask.remove(task.id);
       }
     }
+    notifyListeners();
   }
 }

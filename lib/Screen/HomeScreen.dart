@@ -93,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 8,
             ),
-            Container(
+            SizedBox(
               width: MediaQuery.of(context).size.width,
               child: Image.asset(
                 "lib/assets/DTask_Logo.png",
@@ -103,69 +103,98 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 16,
             ),
-            Row(
+            Stack(
               children: [
+                Positioned(
+                  right: 5,
+                  top: 11,
+                  child: Text(
+                      Provider.of<Task>(context)
+                          .getSelectedTaskLength
+                          .toString(),
+                      style: const TextStyle(fontSize: 20)),
+                ),
                 Row(
                   children: [
-                    Container(
-                      height: 40,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 0),
-                      margin: const EdgeInsets.only(left: 10),
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 252, 252, 252),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: DropdownButton(
-                        icon: const Icon(Icons.filter_alt_rounded),
-                        value: Provider.of<Settings>(context)
-                            .getSelectedFilterIndex,
-                        items: [
-                          DropdownMenuItem(value: 0, child: Text(filter[0])),
-                          DropdownMenuItem(value: 1, child: Text(filter[1])),
-                          DropdownMenuItem(value: 2, child: Text(filter[2]))
-                        ],
-                        onChanged: (value) {
-                          Provider.of<Settings>(context, listen: false)
-                              .setSelectedFilterIndex(value as int);
-                        },
-                      ),
-                    ),
-                    Container(
-                      height: 40,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 0),
-                      margin: const EdgeInsets.only(left: 10),
-                      decoration: BoxDecoration(
-                        color: const Color.fromARGB(255, 252, 252, 252),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: DropdownButton(
-                        icon: const Icon(Icons.sort),
-                        value:
-                            Provider.of<Settings>(context).getSelectedSortIndex,
-                        items: [
-                          DropdownMenuItem(value: 0, child: Text(sort[0])),
-                          DropdownMenuItem(value: 1, child: Text(sort[1])),
-                        ],
-                        onChanged: (value) {
-                          Provider.of<Settings>(context, listen: false)
-                              .setSelectedSortIndex(value as int);
+                    Row(
+                      children: [
+                        Container(
+                          height: 40,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 0),
+                          margin: const EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 252, 252, 252),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: DropdownButton(
+                            icon: const Icon(Icons.filter_alt_rounded),
+                            value: Provider.of<Settings>(context)
+                                .getSelectedFilterIndex,
+                            items: [
+                              DropdownMenuItem(
+                                  value: 0, child: Text(filter[0])),
+                              DropdownMenuItem(
+                                  value: 1, child: Text(filter[1])),
+                              DropdownMenuItem(value: 2, child: Text(filter[2]))
+                            ],
+                            onChanged: (value) {
+                              Provider.of<Settings>(context, listen: false)
+                                  .setSelectedFilterIndex(value as int);
+                            },
+                          ),
+                        ),
+                        Container(
+                          height: 40,
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 0),
+                          margin: const EdgeInsets.only(left: 10),
+                          decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 252, 252, 252),
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: DropdownButton(
+                            icon: const Icon(Icons.sort),
+                            value: Provider.of<Settings>(context)
+                                .getSelectedSortIndex,
+                            items: [
+                              DropdownMenuItem(value: 0, child: Text(sort[0])),
+                              DropdownMenuItem(value: 1, child: Text(sort[1])),
+                            ],
+                            onChanged: (value) {
+                              Provider.of<Settings>(context, listen: false)
+                                  .setSelectedSortIndex(value as int);
 
-                          Provider.of<Task>(context, listen: false)
-                              .sorting(sort[value]);
-                        },
-                      ),
+                              Provider.of<Task>(context, listen: false)
+                                  .sorting(sort[value]);
+                            },
+                          ),
+                        ),
+                      ],
                     ),
+                    IconButton(
+                        onPressed: () async {
+                          if (Provider.of<Task>(context, listen: false)
+                                  .getSelectedTaskLength ==
+                              0) {
+                            const snackBar = SnackBar(
+                              content: Text("Not Selected"),
+                              duration: Duration(milliseconds: 500),
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          } else {
+                            await Provider.of<Task>(context, listen: false)
+                                .deleteSelectedTask();
+                            const snackBar =
+                                SnackBar(content: Text("Deleted Tasks"));
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+                          }
+                        },
+                        icon: const Icon(Icons.delete))
                   ],
                 ),
-                Checkbox(
-                  activeColor: Provider.of<Settings>(context).getPrimary,
-                  value: false,
-                  onChanged: (value) {
-                    
-                  },
-                )
               ],
             ),
             const SizedBox(
