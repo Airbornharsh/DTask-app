@@ -140,7 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius: BorderRadius.circular(5),
                   ),
                   child: DropdownButton(
-                    icon: const Icon(Icons.filter_alt_rounded),
+                    icon: const Icon(Icons.sort),
                     value: Provider.of<Settings>(context).getSelectedSortIndex,
                     items: [
                       DropdownMenuItem(value: 0, child: Text(sort[0])),
