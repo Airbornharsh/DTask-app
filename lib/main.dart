@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: Task()),
       ],
       child: MaterialApp(
-        title: 'MTrace',
+        title: 'DTask',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSwatch().copyWith(
             primary: const Color.fromARGB(255, 14, 124, 123),

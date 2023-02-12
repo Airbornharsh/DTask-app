@@ -23,7 +23,7 @@ class TaskModelTime {
 
 class Task with ChangeNotifier {
   final List<String> _taskString = [];
-  final List<TaskModel> _task = [];
+  List<TaskModel> _task = [];
   List<List<TaskModel>> _taskDay = [];
   List<List<TaskModel>> _taskMonth = [];
 
@@ -84,34 +84,17 @@ class Task with ChangeNotifier {
           _taskMonth.add([]);
         }
 
-        final taskList = _taskString.map((e) {
-          final taskName = e.split("@#_dtask_task_detail_#@")[0];
-          final createdOn = int.parse(e.split("@#_dtask_task_detail_#@")[1]);
-          final id = e.split("@#_dtask_task_detail_#@")[2];
+        late List<TaskModel> taskList;
 
-          final task =
-              TaskModel(taskName: taskName, createdOn: createdOn, id: id);
-          final tempDay =
-              DateTime.fromMillisecondsSinceEpoch(task.createdOn).day;
-          final tempMonth =
-              DateTime.fromMillisecondsSinceEpoch(task.createdOn).month;
-          final tempYear =
-              DateTime.fromMillisecondsSinceEpoch(task.createdOn).year;
+        int sortIndex = prefs.getInt("dtask_selected_sort_index")!;
 
-          for (int i = day; i >= 1; i--) {
-            if (tempDay == i && tempMonth == month && tempYear == year) {
-              _taskDay[day - i].add(task);
-            }
-          }
+        if (sortIndex == 0) {
+          taskList = ascendingSort(date);
+        } else if (sortIndex == 1) {
+          taskList = descendingSort(date);
 
-          for (int i = month; i >= 1; i--) {
-            if (tempMonth == i && tempYear == year) {
-              _taskMonth[month - i].add(task);
-            }
-          }
-
-          return task;
-        });
+          taskList = taskList.reversed.toList();
+        }
 
         _task.addAll(taskList);
         // _taskDay = _taskDay.reversed.toList();
@@ -213,5 +196,89 @@ class Task with ChangeNotifier {
     await prefs.setStringList("dtask_collection", _taskString);
 
     notifyListeners();
+  }
+
+  Future sorting(String type) async {
+    // final prefs = await SharedPreferences.getInstance();
+    final date = DateTime.now();
+
+    late List<TaskModel> taskList;
+
+    for (int i = 1; i <= date.day; i++) {
+      _taskDay[i - 1] = [];
+    }
+
+    for (int i = 1; i <= date.month; i++) {
+      _taskMonth[i - 1] = [];
+    }
+
+    if (type == "Ascending") {
+      taskList = ascendingSort(date);
+    } else if (type == "Descending") {
+      taskList = descendingSort(date);
+
+      taskList = taskList.reversed.toList();
+    }
+
+    _task = taskList;
+
+    notifyListeners();
+  }
+
+  //Helper Functions
+  List<TaskModel> ascendingSort(DateTime date) {
+    return _taskString.map((e) {
+      final taskName = e.split("@#_dtask_task_detail_#@")[0];
+      final createdOn = int.parse(e.split("@#_dtask_task_detail_#@")[1]);
+      final id = e.split("@#_dtask_task_detail_#@")[2];
+
+      final task = TaskModel(taskName: taskName, createdOn: createdOn, id: id);
+      final tempDay = DateTime.fromMillisecondsSinceEpoch(task.createdOn).day;
+      final tempMonth =
+          DateTime.fromMillisecondsSinceEpoch(task.createdOn).month;
+      final tempYear = DateTime.fromMillisecondsSinceEpoch(task.createdOn).year;
+
+      for (int i = date.day; i >= 1; i--) {
+        if (tempDay == i && tempMonth == date.month && tempYear == date.year) {
+          _taskDay[date.day - i].add(task);
+        }
+      }
+
+      for (int i = date.month; i >= 1; i--) {
+        if (tempMonth == i && tempYear == date.year) {
+          _taskMonth[date.month - i].add(task);
+        }
+      }
+
+      return task;
+    }).toList();
+  }
+
+  List<TaskModel> descendingSort(DateTime date) {
+    return _taskString.map((e) {
+      final taskName = e.split("@#_dtask_task_detail_#@")[0];
+      final createdOn = int.parse(e.split("@#_dtask_task_detail_#@")[1]);
+      final id = e.split("@#_dtask_task_detail_#@")[2];
+
+      final task = TaskModel(taskName: taskName, createdOn: createdOn, id: id);
+      final tempDay = DateTime.fromMillisecondsSinceEpoch(task.createdOn).day;
+      final tempMonth =
+          DateTime.fromMillisecondsSinceEpoch(task.createdOn).month;
+      final tempYear = DateTime.fromMillisecondsSinceEpoch(task.createdOn).year;
+
+      for (int i = date.day; i >= 1; i--) {
+        if (tempDay == i && tempMonth == date.month && tempYear == date.year) {
+          _taskDay[date.day - i].insert(0, task);
+        }
+      }
+
+      for (int i = date.month; i >= 1; i--) {
+        if (tempMonth == i && tempYear == date.year) {
+          _taskMonth[date.month - i].insert(0, task);
+        }
+      }
+
+      return task;
+    }).toList();
   }
 }

@@ -32,14 +32,16 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
 
-    final items = [
+    final filter = [
       'Filter',
       'Days',
       'Month',
     ];
 
+    final sort = ["Ascending", "Descending"];
+
     Widget getWidgetAccordingDrawer() {
-      switch (Provider.of<Settings>(context).getSelectedDrawerIndex) {
+      switch (Provider.of<Settings>(context).getSelectedFilterIndex) {
         case 0:
           return const Home();
 
@@ -85,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       // drawer: const HomeDrawer(),
       body: Container(
-        decoration: BoxDecoration(color: Colors.grey.shade200),
+        decoration: BoxDecoration(color: Provider.of<Settings>(context).getColor2),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -102,27 +104,58 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 16,
             ),
-            Container(
-              height: 40,
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
-              margin: const EdgeInsets.only(left: 10),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 252, 252, 252),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: DropdownButton(
-                icon: const Icon(Icons.filter_alt_rounded),
-                value: Provider.of<Settings>(context).getSelectedDrawerIndex,
-                items: [
-                  DropdownMenuItem(value: 0, child: Text(items[0])),
-                  DropdownMenuItem(value: 1, child: Text(items[1])),
-                  DropdownMenuItem(value: 2, child: Text(items[2]))
-                ],
-                onChanged: (value) {
-                  Provider.of<Settings>(context, listen: false)
-                      .setSelectedDrawerIndex(value as int);
-                },
-              ),
+            Row(
+              children: [
+                Container(
+                  height: 40,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                  margin: const EdgeInsets.only(left: 10),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 252, 252, 252),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: DropdownButton(
+                    icon: const Icon(Icons.filter_alt_rounded),
+                    value:
+                        Provider.of<Settings>(context).getSelectedFilterIndex,
+                    items: [
+                      DropdownMenuItem(value: 0, child: Text(filter[0])),
+                      DropdownMenuItem(value: 1, child: Text(filter[1])),
+                      DropdownMenuItem(value: 2, child: Text(filter[2]))
+                    ],
+                    onChanged: (value) {
+                      Provider.of<Settings>(context, listen: false)
+                          .setSelectedFilterIndex(value as int);
+                    },
+                  ),
+                ),
+                Container(
+                  height: 40,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 0),
+                  margin: const EdgeInsets.only(left: 10),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 252, 252, 252),
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  child: DropdownButton(
+                    icon: const Icon(Icons.filter_alt_rounded),
+                    value: Provider.of<Settings>(context).getSelectedSortIndex,
+                    items: [
+                      DropdownMenuItem(value: 0, child: Text(sort[0])),
+                      DropdownMenuItem(value: 1, child: Text(sort[1])),
+                    ],
+                    onChanged: (value) {
+                      Provider.of<Settings>(context, listen: false)
+                          .setSelectedSortIndex(value as int);
+
+                      Provider.of<Task>(context, listen: false)
+                          .sorting(sort[value]);
+                    },
+                  ),
+                ),
+              ],
             ),
             const SizedBox(
               height: 10,

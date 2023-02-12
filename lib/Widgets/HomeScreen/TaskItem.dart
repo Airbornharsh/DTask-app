@@ -72,7 +72,10 @@ class TaskItem extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(7)),
+            color: Provider.of<Settings>(context).getSelectedFilterIndex == 0
+                ? Colors.white
+                : Provider.of<Settings>(context).getColor4,
+            borderRadius: BorderRadius.circular(7)),
         padding: const EdgeInsets.all(7),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
