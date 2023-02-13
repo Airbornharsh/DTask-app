@@ -14,14 +14,27 @@ class TaskView extends StatefulWidget {
 
 class _TaskViewState extends State<TaskView> {
   bool isEditing = false;
-  final _taskController = TextEditingController();
-  late String taskName;
+  final _taskBodyController = TextEditingController();
+  final _taskHeadingController = TextEditingController();
+
+  late String taskBody;
+  late String taskHeading;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    _taskBodyController.dispose();
+    _taskHeadingController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     if (widget.start) {
       setState(() {
-        taskName = widget.task.taskName;
+        taskBody = widget.task.taskBody;
+        taskHeading = widget.task.taskHeading;
         widget.start = false;
       });
     }
@@ -51,7 +64,9 @@ class _TaskViewState extends State<TaskView> {
                       IconButton(
                           onPressed: () {
                             setState(() {
-                              _taskController.text = widget.task.taskName;
+                              _taskBodyController.text = widget.task.taskBody;
+                              _taskHeadingController.text =
+                                  widget.task.taskHeading;
                               isEditing = true;
                               widget.start = false;
                             });
@@ -111,7 +126,17 @@ class _TaskViewState extends State<TaskView> {
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: Column(children: [
                         TextField(
-                          controller: _taskController,
+                          controller: _taskHeadingController,
+                          textInputAction: TextInputAction.done,
+                          // expands: true,
+                          maxLines: null,
+                          autofocus: true,
+                          decoration: const InputDecoration(
+                            hintText: "Edit Task Here",
+                          ),
+                        ),
+                        TextField(
+                          controller: _taskBodyController,
                           textInputAction: TextInputAction.done,
                           // expands: true,
                           maxLines: null,
@@ -146,10 +171,13 @@ class _TaskViewState extends State<TaskView> {
                                 onPressed: () {
                                   Provider.of<Task>(context, listen: false)
                                       .editTask(
-                                          widget.task, _taskController.text);
+                                          widget.task,
+                                          _taskHeadingController.text,
+                                          _taskBodyController.text);
                                   // Navigator.of(context).pop();
                                   setState(() {
-                                    taskName = _taskController.text;
+                                    taskBody = _taskBodyController.text;
+                                    taskHeading = _taskHeadingController.text;
                                     isEditing = false;
                                   });
                                 },
@@ -169,7 +197,21 @@ class _TaskViewState extends State<TaskView> {
                   if (!isEditing)
                     Padding(
                       padding: const EdgeInsets.all(8.0),
-                      child: Text(taskName),
+                      child: Hero(
+                        tag: widget.task.id,
+                        child: Column(
+                          children: [
+                            Text(
+                              widget.task.taskHeading,
+                              style: TextStyle(fontSize: 17),
+                            ),
+                            SizedBox(
+                              height: 3,
+                            ),
+                            Text(widget.task.taskBody)
+                          ],
+                        ),
+                      ),
                     ),
                 ],
               )

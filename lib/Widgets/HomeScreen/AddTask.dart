@@ -11,14 +11,16 @@ class AddTask extends StatefulWidget {
 }
 
 class _AddTaskState extends State<AddTask> {
-  final _taskController = TextEditingController();
+  final _taskBodyController = TextEditingController();
+  final _taskHeadingController = TextEditingController();
 
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
 
-    _taskController.dispose();
+    _taskBodyController.dispose();
+    _taskHeadingController.dispose();
   }
 
   @override
@@ -27,7 +29,21 @@ class _AddTaskState extends State<AddTask> {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(children: [
         TextField(
-          controller: _taskController,
+          controller: _taskBodyController,
+          keyboardType: TextInputType.multiline,
+          textInputAction: TextInputAction.done,
+          // expands: true,
+          maxLines: null,
+          onSubmitted: (value) {
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
+          decoration: const InputDecoration(
+            label: Text("Heading"),
+            hintText: "Enter Your Heading",
+          ),
+        ),
+        TextField(
+          controller: _taskHeadingController,
           keyboardType: TextInputType.multiline,
           textInputAction: TextInputAction.done,
           // expands: true,
@@ -37,14 +53,14 @@ class _AddTaskState extends State<AddTask> {
             FocusScope.of(context).requestFocus(FocusNode());
           },
           decoration: const InputDecoration(
-            label: Text("Note"),
-            hintText: "Enter Your Task Here",
+            label: Text("Body"),
+            hintText: "Enter Your Body",
           ),
         ),
         TextButton(
             onPressed: () {
-              Provider.of<Task>(context, listen: false)
-                  .addTask(_taskController.text);
+              Provider.of<Task>(context, listen: false).addTask(
+                  _taskHeadingController.text, _taskBodyController.text);
               Navigator.of(context).pop();
             },
             style: ButtonStyle(

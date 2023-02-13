@@ -3,12 +3,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 
 class TaskModel {
-  String taskName;
+  String taskHeading;
+  String taskBody;
   int createdOn;
   String id;
 
   TaskModel(
-      {required this.taskName, required this.createdOn, required this.id});
+      {required this.taskHeading,
+      required this.taskBody,
+      required this.createdOn,
+      required this.id});
 }
 
 class Task with ChangeNotifier {
@@ -109,7 +113,7 @@ class Task with ChangeNotifier {
     }
   }
 
-  void addTask(String taskName) async {
+  void addTask(String taskHeading, String taskBody) async {
     try {
       final prefs = await SharedPreferences.getInstance();
 
@@ -120,11 +124,14 @@ class Task with ChangeNotifier {
         await prefs.setStringList("dtask_collection", []);
       }
 
-      final tempTask =
-          TaskModel(taskName: taskName, createdOn: taskCreatedOn, id: taskId);
+      final tempTask = TaskModel(
+          taskHeading: taskHeading,
+          taskBody: taskBody,
+          createdOn: taskCreatedOn,
+          id: taskId);
 
       _taskString.insert(0,
-          "$taskName@#_dtask_task_detail_#@$taskCreatedOn@#_dtask_task_detail_#@$taskId");
+          "$taskHeading@#_dtask_task_detail_#@$taskBody@#_dtask_task_detail_#@$taskCreatedOn@#_dtask_task_detail_#@$taskId");
       _task.insert(0, tempTask);
       _taskDay[0].insert(0, tempTask);
       _taskMonth[0].insert(0, tempTask);
@@ -139,18 +146,21 @@ class Task with ChangeNotifier {
     }
   }
 
-  Future editTask(TaskModel task, String name) async {
+  Future editTask(TaskModel task, String taskHeading, String taskBody) async {
     final prefs = await SharedPreferences.getInstance();
     final date = DateTime.now();
     final tempDate = DateTime.fromMillisecondsSinceEpoch(task.createdOn);
 
     final index = _taskString.indexOf(
-        "${task.taskName}@#_dtask_task_detail_#@${task.createdOn}@#_dtask_task_detail_#@${task.id}");
+        "${task.taskHeading}@#_dtask_task_detail_#@${task.taskBody}@#_dtask_task_detail_#@${task.createdOn}@#_dtask_task_detail_#@${task.id}");
 
     _taskString[index] =
-        "$name@#_dtask_task_detail_#@${task.createdOn}@#_dtask_task_detail_#@${task.id}";
-    final tempTask =
-        TaskModel(taskName: name, createdOn: task.createdOn, id: task.id);
+        "$taskHeading@#_dtask_task_detail_#@$taskBody@#_dtask_task_detail_#@${task.createdOn}@#_dtask_task_detail_#@${task.id}";
+    final tempTask = TaskModel(
+        taskHeading: taskHeading,
+        taskBody: taskBody,
+        createdOn: task.createdOn,
+        id: task.id);
     _task[index] = tempTask;
 
     if (date.month == tempDate.month && date.year == tempDate.year) {
@@ -176,7 +186,7 @@ class Task with ChangeNotifier {
     final tempDate = DateTime.fromMillisecondsSinceEpoch(task.createdOn);
 
     _taskString.remove(
-        "${task.taskName}@#_dtask_task_detail_#@${task.createdOn}@#_dtask_task_detail_#@${task.id}");
+        "${task.taskHeading}@#_dtask_task_detail_#@${task.taskBody}@#_dtask_task_detail_#@${task.createdOn}@#_dtask_task_detail_#@${task.id}");
     _task.removeWhere((e) => e.id == task.id);
 
     if (date.month == tempDate.month && date.year == tempDate.year) {
@@ -210,7 +220,7 @@ class Task with ChangeNotifier {
       final tempDate = DateTime.fromMillisecondsSinceEpoch(task.createdOn);
 
       _taskString.remove(
-          "${task.taskName}@#_dtask_task_detail_#@${task.createdOn}@#_dtask_task_detail_#@${task.id}");
+          "${task.taskHeading}@#_dtask_task_detail_#@${task.taskBody}@#_dtask_task_detail_#@${task.createdOn}@#_dtask_task_detail_#@${task.id}");
       _task.removeWhere((e) => e.id == task.id);
 
       if (date.month == tempDate.month && date.year == tempDate.year) {
@@ -257,11 +267,16 @@ class Task with ChangeNotifier {
   //Helper Functions
   List<TaskModel> ascendingSort(DateTime date) {
     return _taskString.map((e) {
-      final taskName = e.split("@#_dtask_task_detail_#@")[0];
-      final createdOn = int.parse(e.split("@#_dtask_task_detail_#@")[1]);
-      final id = e.split("@#_dtask_task_detail_#@")[2];
+      final taskHeading = e.split("@#_dtask_task_detail_#@")[0];
+      final taskBody = e.split("@#_dtask_task_detail_#@")[1];
+      final createdOn = int.parse(e.split("@#_dtask_task_detail_#@")[2]);
+      final id = e.split("@#_dtask_task_detail_#@")[3];
 
-      final task = TaskModel(taskName: taskName, createdOn: createdOn, id: id);
+      final task = TaskModel(
+          taskHeading: taskHeading,
+          taskBody: taskBody,
+          createdOn: createdOn,
+          id: id);
       final tempDay = DateTime.fromMillisecondsSinceEpoch(task.createdOn).day;
       final tempMonth =
           DateTime.fromMillisecondsSinceEpoch(task.createdOn).month;
@@ -285,11 +300,16 @@ class Task with ChangeNotifier {
 
   List<TaskModel> descendingSort(DateTime date) {
     return _taskString.map((e) {
-      final taskName = e.split("@#_dtask_task_detail_#@")[0];
-      final createdOn = int.parse(e.split("@#_dtask_task_detail_#@")[1]);
-      final id = e.split("@#_dtask_task_detail_#@")[2];
+      final taskHeading = e.split("@#_dtask_task_detail_#@")[0];
+      final taskBody = e.split("@#_dtask_task_detail_#@")[1];
+      final createdOn = int.parse(e.split("@#_dtask_task_detail_#@")[2]);
+      final id = e.split("@#_dtask_task_detail_#@")[3];
 
-      final task = TaskModel(taskName: taskName, createdOn: createdOn, id: id);
+      final task = TaskModel(
+          taskHeading: taskHeading,
+          taskBody: taskBody,
+          createdOn: createdOn,
+          id: id);
       final tempDay = DateTime.fromMillisecondsSinceEpoch(task.createdOn).day;
       final tempMonth =
           DateTime.fromMillisecondsSinceEpoch(task.createdOn).month;

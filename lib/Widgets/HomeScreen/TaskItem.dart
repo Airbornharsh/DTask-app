@@ -71,7 +71,18 @@ class _TaskItemState extends State<TaskItem> {
                         child: GridTile(
                             child: Hero(
                           tag: widget.task.id,
-                          child: Text(widget.task.taskName),
+                          child: Column(
+                            children: [
+                              Text(
+                                widget.task.taskHeading,
+                                style: TextStyle(fontSize: 17),
+                              ),
+                              SizedBox(
+                                height: 3,
+                              ),
+                              Text(widget.task.taskBody)
+                            ],
+                          ),
                         )),
                       ),
                       const SizedBox(
