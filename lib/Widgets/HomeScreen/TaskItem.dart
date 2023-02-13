@@ -27,6 +27,21 @@ class _TaskItemState extends State<TaskItem> {
       isSelected = Provider.of<Task>(context).isSelected(widget.task.id);
     });
 
+    final List fullMonths = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
+
     return GestureDetector(
       onTap: () {
         showGeneralDialog(
@@ -35,6 +50,15 @@ class _TaskItemState extends State<TaskItem> {
           barrierLabel:
               MaterialLocalizations.of(context).modalBarrierDismissLabel,
           barrierColor: Colors.black45,
+          transitionBuilder: (context, animation, secondaryAnimation, child) {
+            final curvedValue =
+                Curves.easeInOutBack.transform(animation.value) - 1.0;
+
+            return Transform(
+              transform: Matrix4.translationValues(0.0, curvedValue * 200, 0.0),
+              child: child,
+            );
+          },
           transitionDuration: const Duration(milliseconds: 200),
           pageBuilder: (context, animation, secondaryAnimation) {
             return Center(
@@ -72,10 +96,12 @@ class _TaskItemState extends State<TaskItem> {
                             child: Hero(
                           tag: widget.task.id,
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 widget.task.taskHeading,
                                 style: TextStyle(fontSize: 17),
+                                overflow: TextOverflow.ellipsis,
                               ),
                               SizedBox(
                                 height: 3,
@@ -88,9 +114,16 @@ class _TaskItemState extends State<TaskItem> {
                       const SizedBox(
                         height: 10,
                       ),
-                      Text(
-                        "${dateTime.hour}:${dateTime.minute} ${dateTime.day}/${dateTime.month}/${dateTime.year}",
-                        style: const TextStyle(fontSize: 11),
+                      // Text(
+                      //   "${dateTime.hour}:${dateTime.minute} ${dateTime.day}/${dateTime.month}/${dateTime.year}",
+                      //   style: const TextStyle(fontSize: 11),
+                      // )
+                      Padding(
+                        padding: EdgeInsets.only(right: 18),
+                        child: Text(
+                          "${dateTime.hour}:${dateTime.minute}  ${Provider.of<Task>(context).getDays(dateTime.day)} ${fullMonths[dateTime.month - 1]}",
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       )
                     ],
                   ),

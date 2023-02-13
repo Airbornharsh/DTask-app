@@ -39,6 +39,24 @@ class _TaskViewState extends State<TaskView> {
       });
     }
 
+    final dateTime = DateTime.fromMillisecondsSinceEpoch(widget.task.createdOn,
+        isUtc: false);
+
+    final List fullMonths = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
+
     return Scaffold(
       body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
@@ -118,7 +136,10 @@ class _TaskViewState extends State<TaskView> {
                             Icons.delete,
                             color: Provider.of<Settings>(context, listen: false)
                                 .getPrimary,
-                          ))
+                          )),
+                      Text(
+                        "${dateTime.hour}:${dateTime.minute}  ${Provider.of<Task>(context).getDays(dateTime.day)} ${fullMonths[dateTime.month - 1]}",
+                      )
                     ],
                   ),
                   if (isEditing)
@@ -200,6 +221,7 @@ class _TaskViewState extends State<TaskView> {
                       child: Hero(
                         tag: widget.task.id,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               widget.task.taskHeading,
