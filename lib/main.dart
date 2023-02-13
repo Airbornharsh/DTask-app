@@ -2,10 +2,12 @@ import 'package:dtask/Provider/Settings.dart';
 import 'package:dtask/Provider/Task.dart';
 import 'package:dtask/Screen/HomeScreen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:provider/provider.dart';
 
 Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   runApp(const MyApp());
 }
@@ -30,7 +32,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         // home: const HomeScreen(),
-        home:  HomeScreen(),
+        home: HomeScreen(),
         // routes: {},
       ),
     );

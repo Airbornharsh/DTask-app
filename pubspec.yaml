@@ -41,12 +41,19 @@ dependencies:
   path_provider: ^2.0.11
   scrollable_positioned_list: ^0.3.5
   uuid: ^3.0.7
+  flutter_native_splash: ^2.2.16
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_launcher_icons: ^0.11.0
   rename: ^2.1.1
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "lib/assets/DTask_Logo.png"
+  # adaptive_icon_background: "#e8da1a"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
