@@ -147,7 +147,17 @@ class _HomeScreenState extends State<HomeScreen> {
                                 },
                                 icon: Icon(Icons.clear),
                               )
-                            : null,
+                            : IconButton(
+                                onPressed: () {
+                                  FocusScope.of(context)
+                                      .requestFocus(new FocusNode());
+                                  setState(() {
+                                    isSearching = false;
+                                  });
+                                  _searchController.clear();
+                                },
+                                icon: Icon(Icons.clear),
+                              ),
                         suffixIconColor: Colors.grey),
                     onChanged: (value) async {
                       await Provider.of<Task>(context, listen: false)

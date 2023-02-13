@@ -29,7 +29,7 @@ class _AddTaskState extends State<AddTask> {
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: Column(children: [
         TextField(
-          controller: _taskBodyController,
+          controller: _taskHeadingController,
           keyboardType: TextInputType.multiline,
           textInputAction: TextInputAction.done,
           // expands: true,
@@ -43,7 +43,7 @@ class _AddTaskState extends State<AddTask> {
           ),
         ),
         TextField(
-          controller: _taskHeadingController,
+          controller: _taskBodyController,
           keyboardType: TextInputType.multiline,
           textInputAction: TextInputAction.done,
           // expands: true,

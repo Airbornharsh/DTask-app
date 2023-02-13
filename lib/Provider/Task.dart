@@ -389,7 +389,8 @@ class Task with ChangeNotifier {
     try {
       _searchedTask = await _task
           .where((task) =>
-              task.taskHeading.contains(text) || task.taskBody.contains(text))
+              task.taskHeading.toLowerCase().contains(text.toLowerCase()) ||
+              task.taskBody.toLowerCase().contains(text.toLowerCase()))
           .toList();
     } catch (e) {
       print(e);
