@@ -102,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(
-              height: 20,
+              height: 40,
             ),
             // SizedBox(
             //   width: MediaQuery.of(context).size.width,
@@ -197,13 +197,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               horizontal: 15, vertical: 0),
                           margin: const EdgeInsets.only(left: 10),
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 252, 252, 252),
+                            color: Provider.of<Settings>(context).getColor5,
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child: DropdownButton(
                             icon: const Icon(Icons.filter_alt_rounded),
                             value: Provider.of<Settings>(context)
                                 .getSelectedFilterIndex,
+                            dropdownColor:
+                                Provider.of<Settings>(context).getColor5,
                             items: [
                               DropdownMenuItem(
                                   value: 0, child: Text(filter[0])),
@@ -226,13 +228,15 @@ class _HomeScreenState extends State<HomeScreen> {
                               horizontal: 15, vertical: 0),
                           margin: const EdgeInsets.only(left: 10),
                           decoration: BoxDecoration(
-                            color: const Color.fromARGB(255, 252, 252, 252),
+                            color: Provider.of<Settings>(context).getColor5,
                             borderRadius: BorderRadius.circular(5),
                           ),
                           child: DropdownButton(
                             icon: const Icon(Icons.sort),
                             value: Provider.of<Settings>(context)
                                 .getSelectedSortIndex,
+                            dropdownColor:
+                                Provider.of<Settings>(context).getColor5,
                             items: [
                               DropdownMenuItem(value: 0, child: Text(sort[0])),
                               DropdownMenuItem(value: 1, child: Text(sort[1])),

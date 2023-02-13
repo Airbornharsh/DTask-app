@@ -83,6 +83,8 @@ class Task with ChangeNotifier {
       final day = date.day;
       final month = date.month;
 
+      // prefs.clear();
+
       if (prefs.containsKey("dtask_collection")) {
         final list = prefs.getStringList("dtask_collection") as List<String>;
 
@@ -112,6 +114,19 @@ class Task with ChangeNotifier {
 
         return;
       } else {
+        await prefs.setStringList("dtask_collection", []);
+
+        _taskString.addAll([]);
+
+        _task.addAll([]);
+
+        for (int i = 1; i <= day; i++) {
+          _taskDay.add([]);
+        }
+
+        for (int i = 1; i <= month; i++) {
+          _taskMonth.add([]);
+        }
         return;
       }
     } catch (e) {
