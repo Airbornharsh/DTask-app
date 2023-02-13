@@ -18,12 +18,17 @@ class TaskModel {
 class Task with ChangeNotifier {
   final List<String> _taskString = [];
   List<TaskModel> _task = [];
+  List<TaskModel> _searchedTask = [];
   final List<List<TaskModel>> _taskDay = [];
   final List<List<TaskModel>> _taskMonth = [];
   final List<String> _selectedTask = [];
 
   List<TaskModel> get getTaskList {
     return _task;
+  }
+
+  List<TaskModel> get getSearchedTaskList {
+    return _searchedTask;
   }
 
   List<List<TaskModel>> get getTaskDayList {
@@ -36,6 +41,10 @@ class Task with ChangeNotifier {
 
   int get getTaskListLength {
     return _task.length;
+  }
+
+  int get getSearchedTaskListLength {
+    return _searchedTask.length;
   }
 
   int get getTaskDayListLength {
@@ -372,6 +381,18 @@ class Task with ChangeNotifier {
       if (_selectedTask.contains(task.id)) {
         _selectedTask.remove(task.id);
       }
+    }
+    notifyListeners();
+  }
+
+  Future searchingTasks(String text) async {
+    try {
+      _searchedTask = await _task
+          .where((task) =>
+              task.taskHeading.contains(text) || task.taskBody.contains(text))
+          .toList();
+    } catch (e) {
+      print(e);
     }
     notifyListeners();
   }

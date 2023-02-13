@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Home extends StatelessWidget {
-  const Home({super.key});
+  bool isSearching;
+  Home({super.key, required this.isSearching});
 
   @override
   Widget build(BuildContext context) {
@@ -14,9 +15,13 @@ class Home extends StatelessWidget {
           mainAxisSpacing: 3,
           crossAxisSpacing: 3,
           childAspectRatio: 4 / 3),
-      itemCount: Provider.of<Task>(context).getTaskListLength,
+      itemCount: isSearching
+          ? Provider.of<Task>(context).getSearchedTaskListLength
+          : Provider.of<Task>(context).getTaskListLength,
       itemBuilder: (context, index) {
-        final task = Provider.of<Task>(context).getTaskList[index];
+        final task = isSearching
+            ? Provider.of<Task>(context).getSearchedTaskList[index]
+            : Provider.of<Task>(context).getTaskList[index];
 
         return TaskItem(
           task: task,

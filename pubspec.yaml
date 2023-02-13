@@ -73,12 +73,12 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - lib/assets/DTask_Logo.png
-    - "lib/assets/DTask_Upscaled_Logo_New1.png"
-    - "lib/assets/DTask_Upscaled_Logo_New2.png"
-    - "lib/assets/DTask_Upscaled_Logo.png"
-    - "lib/assets/DTask_Upscaled_Logo_New.png"
+  # assets:
+    # - lib/assets/DTask_Logo.png
+    # - "lib/assets/DTask_Upscaled_Logo_New1.png"
+    # - "lib/assets/DTask_Upscaled_Logo_New2.png"
+    # - "lib/assets/DTask_Upscaled_Logo.png"
+    # - "lib/assets/DTask_Upscaled_Logo_New.png"
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

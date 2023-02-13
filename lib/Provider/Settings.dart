@@ -6,6 +6,7 @@ class Settings with ChangeNotifier {
   final Color _color2 = const Color.fromARGB(255, 143, 221, 220);
   final Color _color3 = const Color.fromARGB(255, 255, 255, 255);
   final Color _color4 = const Color.fromARGB(255, 143, 221, 220);
+  final Color _color5 = Color.fromARGB(255, 200, 238, 237);
 
   int _selectedFilterIndex = 0;
   int _selectedSortIndex = 0;
@@ -24,6 +25,10 @@ class Settings with ChangeNotifier {
 
   Color get getColor4 {
     return _color4;
+  }
+
+  Color get getColor5 {
+    return _color5;
   }
 
   int get getSelectedFilterIndex {

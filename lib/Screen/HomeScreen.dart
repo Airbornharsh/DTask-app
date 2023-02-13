@@ -17,6 +17,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   // int dropdownindex = 0;
+  TextEditingController _searchController = TextEditingController();
+  bool isSearching = false;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _searchController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +50,9 @@ class _HomeScreenState extends State<HomeScreen> {
     Widget getWidgetAccordingDrawer() {
       switch (Provider.of<Settings>(context).getSelectedFilterIndex) {
         case 0:
-          return const Home();
+          return Home(
+            isSearching: isSearching,
+          );
 
         case 1:
           return const Days();
@@ -91,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(
-              height: 8,
+              height: 20,
             ),
             // SizedBox(
             //   width: MediaQuery.of(context).size.width,
@@ -100,7 +111,58 @@ class _HomeScreenState extends State<HomeScreen> {
             //     height: 50,
             //   ),
             // ),
-            
+            Center(
+              child: Container(
+                  width: MediaQuery.of(context).size.width * 80 / 100,
+                  // margin: EdgeInsets.symmetric(horizontal: 40),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 3),
+                  decoration: BoxDecoration(
+                      color: Provider.of<Settings>(context).getColor5,
+                      borderRadius: BorderRadius.circular(60)),
+                  child: TextField(
+                    onTap: () {
+                      setState(() {
+                        isSearching = true;
+                      });
+                      Provider.of<Settings>(context, listen: false)
+                          .setSelectedFilterIndex(0);
+                    },
+                    controller: _searchController,
+                    style: TextStyle(color: Colors.grey.shade900),
+                    cursorColor: Colors.white,
+                    decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Search",
+                        icon: Icon(Icons.search, color: Colors.grey),
+                        iconColor: Colors.grey,
+                        suffixIcon: isSearching
+                            ? IconButton(
+                                onPressed: () {
+                                  FocusScope.of(context)
+                                      .requestFocus(new FocusNode());
+                                  setState(() {
+                                    isSearching = false;
+                                  });
+                                },
+                                icon: Icon(Icons.clear),
+                              )
+                            : null,
+                        suffixIconColor: Colors.grey),
+                    onChanged: (value) async {
+                      await Provider.of<Task>(context, listen: false)
+                          .searchingTasks(_searchController.text);
+                    },
+                    onSubmitted: (value) async {
+                      await Provider.of<Task>(context, listen: false)
+                          .searchingTasks(_searchController.text);
+                      FocusScope.of(context).requestFocus(new FocusNode());
+                      setState(() {
+                        isSearching = false;
+                      });
+                    },
+                  )),
+            ),
             const SizedBox(
               height: 16,
             ),
@@ -140,6 +202,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               DropdownMenuItem(value: 2, child: Text(filter[2]))
                             ],
                             onChanged: (value) {
+                              setState(() {
+                                isSearching = false;
+                              });
                               Provider.of<Settings>(context, listen: false)
                                   .setSelectedFilterIndex(value as int);
                             },
