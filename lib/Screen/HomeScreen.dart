@@ -93,13 +93,14 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 8,
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width,
-              child: Image.asset(
-                "lib/assets/DTask_Logo.png",
-                height: 50,
-              ),
-            ),
+            // SizedBox(
+            //   width: MediaQuery.of(context).size.width,
+            //   child: Image.asset(
+            //     "lib/assets/DTask_Upscaled_Logo_New2.png",
+            //     height: 50,
+            //   ),
+            // ),
+            
             const SizedBox(
               height: 16,
             ),
