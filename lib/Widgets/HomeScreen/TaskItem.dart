@@ -62,7 +62,9 @@ class _TaskItemState extends State<TaskItem> {
           transitionDuration: const Duration(milliseconds: 200),
           pageBuilder: (context, animation, secondaryAnimation) {
             return Center(
-              child: SizedBox(
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Provider.of<Settings>(context).getColor5),
                 width: MediaQuery.of(context).size.width - 20,
                 height: MediaQuery.of(context).size.height - 100,
                 child: ClipRRect(
@@ -84,7 +86,7 @@ class _TaskItemState extends State<TaskItem> {
                       color: Provider.of<Settings>(context)
                                   .getSelectedFilterIndex ==
                               0
-                          ? Colors.white
+                          ? Provider.of<Settings>(context).getColor5
                           : Provider.of<Settings>(context).getColor4,
                       borderRadius: BorderRadius.circular(7)),
                   padding: const EdgeInsets.all(7),

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.organisation.dtask">
+    package="com.airbornharsh.dtask">
    <application
         android:label="DTask"
         android:name="${applicationName}"
@@ -30,5 +30,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-1856488952723088~6175243101"/>
     </application>
 </manifest>

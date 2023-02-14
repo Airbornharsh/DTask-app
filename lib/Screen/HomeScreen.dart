@@ -1,3 +1,4 @@
+import 'package:dtask/AdMobileService.dart';
 import 'package:dtask/Provider/Settings.dart';
 import 'package:dtask/Provider/Task.dart';
 import 'package:dtask/Widgets/HomeScreen/AddTask.dart';
@@ -5,6 +6,7 @@ import 'package:dtask/Widgets/HomeScreen/Drawer/Days.dart';
 import 'package:dtask/Widgets/HomeScreen/Drawer/Home.dart';
 import 'package:dtask/Widgets/HomeScreen/Drawer/Months.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,8 +19,26 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   // int dropdownindex = 0;
+  BannerAd? _banner;
   TextEditingController _searchController = TextEditingController();
   bool isSearching = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _createNativeAd();
+  }
+
+  void _createNativeAd() {
+    _banner = BannerAd(
+        size: AdSize.fullBanner,
+        adUnitId: AdMobileService.bannerAdUnitId!,
+        listener: AdMobileService.bannerListener,
+        request: const AdRequest())
+      ..load();
+  }
 
   @override
   void dispose() {
@@ -72,6 +92,12 @@ class _HomeScreenState extends State<HomeScreen> {
       //     title: Text(
       //   appBarTitle[Provider.of<Settings>(context).getSelectedDrawerIndex],
       // )),
+      bottomNavigationBar: _banner == null
+          ? Container()
+          : Container(
+              margin: EdgeInsets.only(bottom: 12),
+              height: 52,
+              child: AdWidget(ad: _banner!)),
       floatingActionButton: ClipRRect(
         borderRadius: BorderRadius.circular(200),
         child: Container(

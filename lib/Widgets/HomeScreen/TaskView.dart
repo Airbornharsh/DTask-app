@@ -59,6 +59,8 @@ class _TaskViewState extends State<TaskView> {
 
     return Scaffold(
       body: Container(
+          decoration:
+              BoxDecoration(color: Provider.of<Settings>(context).getColor5),
           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
           child: Stack(
             children: [

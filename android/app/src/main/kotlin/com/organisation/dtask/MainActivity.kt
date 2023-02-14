@@ -1,4 +1,4 @@
-package com.organisation.dtask
+package com.airbornharsh.dtask
 
 import io.flutter.embedding.android.FlutterActivity
 
